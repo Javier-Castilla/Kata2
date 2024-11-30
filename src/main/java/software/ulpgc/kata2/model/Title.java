@@ -2,7 +2,7 @@ package software.ulpgc.kata2.model;
 
 import java.time.Year;
 
-public record Film(String id, TitleType titleType, String primaryTitle, String originalString, boolean isAdult, Year startYear, Year endYear, int runtimeMinutes, Genre[] genres) {
+public record Title(String id, TitleType titleType, String primaryTitle, String originalTitle, boolean isAdult, Year startYear, Year endYear, int runtimeMinutes, Genre[] genres) {
     public enum TitleType {
         VideoGame,
         TvPilot,

@@ -1,6 +1,6 @@
 package software.ulpgc.kata2.io;
 
-import software.ulpgc.kata2.model.Film;
+import software.ulpgc.kata2.model.Title;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,17 +9,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TsvFileFilmReader implements FilmReader {
+public class TsvFileTitleReader implements TitleReader {
     private final File file;
-    private final FilmDeserializer deserializer;
+    private final TitleDeserializer deserializer;
 
-    public TsvFileFilmReader(File file, FilmDeserializer deserializer) {
+    public TsvFileTitleReader(File file, TitleDeserializer deserializer) {
         this.file = file;
         this.deserializer = deserializer;
     }
 
     @Override
-    public List<Film> read() {
+    public List<Title> read() {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             reader.readLine();
             return readWith(reader);
@@ -28,11 +28,11 @@ public class TsvFileFilmReader implements FilmReader {
         }
     }
 
-    private List<Film> readWith(BufferedReader reader) throws IOException {
+    private List<Title> readWith(BufferedReader reader) throws IOException {
         String line;
-        List<Film> films = new ArrayList<>();
+        List<Title> titles = new ArrayList<>();
         while ((line = reader.readLine()) != null)
-            films.add(deserializer.deserialize(line));
-        return films;
+            titles.add(deserializer.deserialize(line));
+        return titles;
     }
 }

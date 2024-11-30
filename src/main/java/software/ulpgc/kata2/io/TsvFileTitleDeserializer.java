@@ -1,15 +1,14 @@
 package software.ulpgc.kata2.io;
 
-import org.jfree.chart.title.Title;
-import software.ulpgc.kata2.model.Film;
+import software.ulpgc.kata2.model.Title;
 
 import java.time.Year;
 
-public class TsvFileFilmDeserializer implements FilmDeserializer {
+public class TsvFileTitleDeserializer implements TitleDeserializer {
     @Override
-    public Film deserialize(String line) {
+    public Title deserialize(String line) {
         String[] fields = line.split("\t");
-        return new Film(
+        return new Title(
                 fields[0],
                 toTitleType(fields[1]),
                 fields[2],
@@ -22,17 +21,17 @@ public class TsvFileFilmDeserializer implements FilmDeserializer {
         );
     }
 
-    private Film.Genre[] getGenresArray(String field) {
-        if (isNullCharacter(field))return new Film.Genre[0];
+    private Title.Genre[] getGenresArray(String field) {
+        if (isNullCharacter(field)) return new Title.Genre[0];
         String[] split = field.split(",");
-        Film.Genre[] genres = new Film.Genre[split.length];
+        Title.Genre[] genres = new Title.Genre[split.length];
         for (int i = 0; i < split.length; i++)
             genres[i] = toGenre(split[i]);
         return genres;
     }
 
-    private Film.Genre toGenre(String s) {
-        return Film.Genre.valueOf(normalize(s));
+    private Title.Genre toGenre(String string) {
+        return Title.Genre.valueOf(normalizeString(string));
     }
 
     private Year toYear(String field) {
@@ -51,11 +50,11 @@ public class TsvFileFilmDeserializer implements FilmDeserializer {
         return Boolean.parseBoolean(field);
     }
 
-    private Film.TitleType toTitleType(String field) {
-        return Film.TitleType.valueOf(normalize(field));
+    private Title.TitleType toTitleType(String field) {
+        return Title.TitleType.valueOf(normalizeString(field));
     }
 
-    private String normalize(String field) {
+    private String normalizeString(String field) {
         String result = String.valueOf(field.toUpperCase().charAt(0));
         return result + field.substring(1).replace("-", "");
     }
