@@ -3,6 +3,7 @@ package software.ulpgc.kata2.io;
 import software.ulpgc.kata2.model.Title;
 
 import java.time.Year;
+import java.util.Arrays;
 
 public class TsvFileTitleDeserializer implements TitleDeserializer {
     @Override
@@ -23,11 +24,9 @@ public class TsvFileTitleDeserializer implements TitleDeserializer {
 
     private Title.Genre[] getGenresArray(String field) {
         if (isNullCharacter(field)) return new Title.Genre[0];
-        String[] split = field.split(",");
-        Title.Genre[] genres = new Title.Genre[split.length];
-        for (int i = 0; i < split.length; i++)
-            genres[i] = toGenre(split[i]);
-        return genres;
+        return Arrays.stream(field.split(","))
+                .map(this::toGenre)
+                .toArray(Title.Genre[]::new);
     }
 
     private Title.Genre toGenre(String string) {
@@ -55,7 +54,7 @@ public class TsvFileTitleDeserializer implements TitleDeserializer {
     }
 
     private String normalizeString(String field) {
-        String result = String.valueOf(field.toUpperCase().charAt(0));
-        return result + field.substring(1).replace("-", "");
+        return field.toUpperCase().charAt(0) +
+                field.substring(1).replace("-", "");
     }
 }
